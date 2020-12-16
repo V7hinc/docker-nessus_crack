@@ -8,8 +8,7 @@ COPY autostart.sh /opt/
 
 # crack nessus
 RUN set -x;\
-/bin/bash /opt/nessus/nessus_update_plugins_crack.sh;\
-chmod +x /opt/start_app.sh
+/bin/bash /opt/nessus/nessus_update_plugins_crack.sh;
 
 # add regular execution to crontab
 RUN set -x;\
@@ -19,6 +18,9 @@ echo '0 0 1 * * /bin/bash /opt/nessus/nessus_update_plugins_crack.sh' > /opt/cro
 crontab /opt/crontabfile;\
 crontab -l;
 
+# 给自启动脚本赋值
+RUN set -x;\
+chmod +x /opt/autostart.sh
 
 EXPOSE 8834
 CMD /opt/autostart.sh
