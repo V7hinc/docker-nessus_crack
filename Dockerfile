@@ -16,7 +16,7 @@ sleep 10;\
 # 先访问一下主页
 curl -k https://127.0.0.1:8834;\
 # 设置一下账号密码
-sleep 30;\
+sleep 60;\
 curl -k -XPOST https://127.0.0.1:8834/users -H "Content-Type: application/json" -d "{\"username\":\"admin\",\"password\":\"nimda\",\"permissions\":128}";\
 # 重启一下
 sleep 10;\
