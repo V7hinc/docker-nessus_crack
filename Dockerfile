@@ -5,6 +5,7 @@ ENV USERNAME=admin
 ENV PASSWORD=nimda
 
 COPY nessus_update_plugins_crack.sh /opt/nessus/
+COPY nessus_crack.sh /opt/nessus/
 
 WORKDIR "/opt/nessus"
 
@@ -42,7 +43,9 @@ echo '/etc/init.d/nessusd start;cron -f >> /var/log/cron_log' > /opt/autostart.s
 # 利用延时等待1小时，在构建docker时就把插件包安装好，以减少拉取到本地后等待较长时间
 RUN set -x;\
 /etc/init.d/nessusd start;\
-sleep 3600
+sleep 3600;\
+# 再次执行破解脚本
+/bin/bash /opt/nessus/nessus_crack.sh;
 
 EXPOSE 8834
 CMD /bin/bash /opt/autostart.sh

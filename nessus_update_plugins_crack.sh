@@ -8,11 +8,4 @@ curl -k -o all-2.0.tar.gz $download_plugins_url;\
 /opt/nessus/sbin/nessuscli update all-2.0.tar.gz;\
 # 更新完了，删除插件包
 rm -f all-2.0.tar.gz;\
-# 获取PLUGIN_SET
-PLUGIN_SET=$(curl "https://plugins.nessus.org/v2/plugins.php");\
-crack_file=/opt/nessus/var/nessus/plugin_feed_info.inc;\
-# 将必要的内容写入plugin_feed_info.inc中实现破解
-echo 'PLUGIN_SET = "'$PLUGIN_SET'";' > $crack_file;\
-echo 'PLUGIN_FEED = "ProfessionalFeed (Direct)";' >> $crack_file;\
-echo 'PLUGIN_FEED_TRANSPORT = "Tenable Network Security Lightning";' >> $crack_file;\
-/etc/init.d/nessusd restart
+/bin/bash nessus_crack.sh
