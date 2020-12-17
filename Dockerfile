@@ -12,12 +12,14 @@ WORKDIR "/opt/nessus"
 RUN set -x;\
 # 启动nessus
 /etc/init.d/nessusd start;\
-sleep 30;\
+sleep 10;\
 # 先访问一下主页
 curl -k https://127.0.0.1:8834;\
 # 设置一下账号密码
+sleep 10;\
 curl -k -XPOST https://127.0.0.1:8834/users -H "Content-Type: application/json" -d "{\"username\":\"$USERNAME\",\"password\":\"$PASSWORD\",\"permissions\":128}";\
 # 重启一下
+sleep 10;\
 curl -k -XPOST https://127.0.0.1:8834/server/restart
 
 # crack nessus
