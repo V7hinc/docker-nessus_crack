@@ -21,7 +21,8 @@ sleep 60;\
 curl -k -XPOST https://127.0.0.1:8834/users -H "Content-Type: application/json" -d "{\"username\":\"$USERNAME\",\"password\":\"$PASSWORD\",\"permissions\":128}";\
 # 重启一下
 sleep 10;\
-curl -k -XPOST https://127.0.0.1:8834/server/restart;
+curl -k -XPOST https://127.0.0.1:8834/server/restart;\
+sleep 120;
 
 
 # crack nessus
