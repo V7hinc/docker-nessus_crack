@@ -12,6 +12,7 @@ WORKDIR "/opt/nessus"
 RUN set -x;\
 # 启动nessus
 /etc/init.d/nessusd start;\
+sleep 30;\
 # 先访问一下主页
 curl -k https://127.0.0.1:8834;\
 # 设置一下账号密码
