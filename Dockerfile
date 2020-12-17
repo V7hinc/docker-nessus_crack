@@ -16,11 +16,12 @@ sleep 10;\
 # 先访问一下主页
 curl -k https://127.0.0.1:8834;\
 # 设置一下账号密码
-sleep 10;\
-curl -k -XPOST https://127.0.0.1:8834/users -H "Content-Type: application/json" -d "{\"username\":\"$USERNAME\",\"password\":\"$PASSWORD\",\"permissions\":128}";\
+sleep 30;\
+curl -k -XPOST https://127.0.0.1:8834/users -H "Content-Type: application/json" -d "{\"username\":\"admin\",\"password\":\"nimda\",\"permissions\":128}";\
 # 重启一下
 sleep 10;\
-curl -k -XPOST https://127.0.0.1:8834/server/restart
+curl -k -XPOST https://127.0.0.1:8834/server/restart;
+
 
 # crack nessus
 RUN set -x;\
@@ -39,9 +40,9 @@ RUN set -x;\
 echo '/etc/init.d/nessusd start;cron -f >> /var/log/cron_log' > /opt/autostart.sh
 
 # 利用延时等待1小时，在构建docker时就把插件包安装好，以减少拉取到本地后等待较长时间
-RUN set -x;\
-/etc/init.d/nessusd start;\
-sleep 3600
+#RUN set -x;\
+#/etc/init.d/nessusd start;\
+#sleep 3600
 
 EXPOSE 8834
 CMD /bin/bash /opt/autostart.sh
