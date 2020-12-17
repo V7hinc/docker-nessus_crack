@@ -1,10 +1,23 @@
-FROM v7hinc/nessus:v1.0
+FROM v7hinc/nessus:8.13.0-ubuntu
 MAINTAINER V7hinc
+
+ENV USERNAME=admin
+ENV PASSWORD=nimda
+
+COPY nessus_update_plugins_crack.sh /opt/nessus/
 
 WORKDIR "/opt/nessus"
 
-COPY nessus_update_plugins_crack.sh /opt/nessus/
-COPY autostart.sh /opt/
+# init nessus
+RUN set -x;\
+# 启动nessus
+/etc/init.d/nessusd start;\
+# 先访问一下主页
+curl -k https://127.0.0.1:8834;\
+# 设置一下账号密码
+curl -k -XPOST https://127.0.0.1:8834/users -H "Content-Type: application/json" -d "{\"username\":\"$USERNAME\",\"password\":\"$PASSWORD\",\"permissions\":128}";\
+# 重启一下
+curl -k -XPOST https://127.0.0.1:8834/server/restart
 
 # crack nessus
 RUN set -x;\
@@ -18,9 +31,9 @@ echo '0 0 1 * * /bin/bash /opt/nessus/nessus_update_plugins_crack.sh' > /opt/cro
 crontab /opt/crontabfile;\
 crontab -l;
 
-# 给自启动脚本赋值
 RUN set -x;\
-chmod +x /opt/autostart.sh
+# 编写自启动脚本
+echo '/etc/init.d/nessusd start;cron -f >> /var/log/cron_log' > /opt/autostart.sh
 
 # 利用延时等待1小时，在构建docker时就把插件包安装好，以减少拉取到本地后等待较长时间
 RUN set -x;\
@@ -28,4 +41,4 @@ RUN set -x;\
 sleep 3600
 
 EXPOSE 8834
-CMD /opt/autostart.sh
+CMD /bin/bash /opt/autostart.sh
