@@ -5,6 +5,7 @@ ENV USERNAME=admin
 ENV PASSWORD=nimda
 
 COPY nessus_update_plugins_crack.sh /opt/nessus/
+COPY nessus_update_plugins.sh /opt/nessus/
 COPY nessus_crack.sh /opt/nessus/
 
 WORKDIR "/opt/nessus"
@@ -22,12 +23,8 @@ curl -k -XPOST https://127.0.0.1:8834/users -H "Content-Type: application/json" 
 # 重启一下
 sleep 10;\
 curl -k -XPOST https://127.0.0.1:8834/server/restart;\
-sleep 120;
-
-
-# crack nessus
-RUN set -x;\
-/bin/bash /opt/nessus/nessus_update_plugins_crack.sh;
+sleep 120;\
+curl -k https://127.0.0.1:8834;
 
 # add regular execution to crontab
 RUN set -x;\
@@ -41,11 +38,11 @@ RUN set -x;\
 # 编写自启动脚本
 echo '/etc/init.d/nessusd start;cron -f >> /var/log/cron_log' > /opt/autostart.sh
 
-# 利用延时等待1小时，在构建docker时就把插件包安装好，以减少拉取到本地后等待较长时间
+# crack nessus
 RUN set -x;\
-/etc/init.d/nessusd start;\
-sleep 3600;\
-# 再次执行破解脚本
+# 更新插件
+/bin/bash /opt/nessus/nessus_update_plugins.sh;\
+# 执行破解脚本
 /bin/bash /opt/nessus/nessus_crack.sh;
 
 EXPOSE 8834
