@@ -17,6 +17,7 @@ download_plugins(){
   # 下载nessus的插件包
   echo "正在下载插件包";
   curl -k -o all-2.0.tar.gz $download_plugins_url;
+  sleep 10;
 }
 update_plugins(){
   if [ ! -f "all-2.0.tar.gz" ]; then
@@ -29,7 +30,7 @@ update_plugins(){
   nessus_restart;
   # 判断是否是ready状态，是的话就进入下一步
   isready;
-  sleep 600;
+  sleep 300;
   isready;
 }
 nessus_crack(){

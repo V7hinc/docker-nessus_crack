@@ -14,15 +14,16 @@ WORKDIR "/opt/nessus"
 RUN set -x;\
 # 启动nessus
 /etc/init.d/nessusd start;\
-sleep 10;\
+sleep 20;\
 # 先访问一下主页
 curl -k https://127.0.0.1:8834;\
 # 设置一下账号密码
 sleep 60;\
 curl -k -XPOST https://127.0.0.1:8834/users -H "Content-Type: application/json" -d "{\"username\":\"$USERNAME\",\"password\":\"$PASSWORD\",\"permissions\":128}";\
 # 重启一下
-sleep 20;\
-curl -k -XPOST https://127.0.0.1:8834/server/restart;
+sleep 30;\
+curl -k -XPOST https://127.0.0.1:8834/server/restart;\
+sleep 20;
 
 
 # add regular execution to crontab
@@ -36,8 +37,7 @@ crontab -l;
 # 仅下载插件
 RUN set -x;\
 /bin/bash nessus_update_plugins_crack.sh download_plugins;\
-ls -l;\
-/bin/bash nessus_update_plugins_crack.sh isready;
+ls -l;
 
 
 EXPOSE 8834
