@@ -10,6 +10,9 @@ download_plugins(){
   curl -k -o all-2.0.tar.gz $download_plugins_url;
 }
 update_plugins(){
+  if [ ! -f "all-2.0.tar.gz" ]; then
+    /bin/bash nessus_update_plugins_crack.sh download_plugins;
+  fi
   # 更新插件，这个需要一会儿时间
   /opt/nessus/sbin/nessuscli update all-2.0.tar.gz;
   # 更新完了，删除插件包
@@ -39,7 +42,6 @@ elif [ "$1" = "update_plugins" ]; then
 elif [ "$1" = "nessus_crack" ]; then
   nessus_crack
 else
-  download_plugins
   update_plugins
   nessus_crack
 fi
