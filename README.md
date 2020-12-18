@@ -1,5 +1,5 @@
 # docker-nessus_crack
-该docker仅做了安装nessus,建立在v7hinc/nessus:v1.0镜像的基础上进行nessus破解
+该docker仅做了安装nessus,建立在v7hinc/nessus:8.13.0-ubuntu镜像的基础上进行nessus破解
 并设置了定时任务，每月进行插件更新
 
 ## 版本说明
