@@ -4,9 +4,7 @@ MAINTAINER V7hinc
 ENV USERNAME=admin
 ENV PASSWORD=nimda
 
-COPY nessus_update_plugins_crack.sh /opt/nessus/
-COPY nessus_update_plugins.sh /opt/nessus/
-COPY nessus_crack.sh /opt/nessus/
+COPY *.sh /opt/nessus/
 
 WORKDIR "/opt/nessus"
 
@@ -34,16 +32,5 @@ echo '0 0 1 * * /bin/bash /opt/nessus/nessus_update_plugins_crack.sh' > /opt/cro
 crontab /opt/crontabfile;\
 crontab -l;
 
-RUN set -x;\
-# 编写自启动脚本
-echo '/etc/init.d/nessusd start;cron -f >> /var/log/cron_log' > /opt/autostart.sh
-
-# crack nessus
-RUN set -x;\
-# 更新插件
-/bin/bash /opt/nessus/nessus_update_plugins.sh;\
-# 执行破解脚本
-/bin/bash /opt/nessus/nessus_crack.sh;
-
 EXPOSE 8834
-CMD /bin/bash /opt/autostart.sh
+CMD /bin/bash /opt/nessus/autostart.sh
