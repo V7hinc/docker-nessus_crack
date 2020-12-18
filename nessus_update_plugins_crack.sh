@@ -29,6 +29,8 @@ update_plugins(){
   nessus_restart;
   # 判断是否是ready状态，是的话就进入下一步
   isready;
+  sleep 120;
+  isready;
 }
 nessus_crack(){
   echo "正在破解";
