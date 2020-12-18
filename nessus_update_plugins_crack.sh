@@ -2,6 +2,15 @@ cd $(dirname $0);
 nessus_restart(){
   /etc/init.d/nessusd restart;
 }
+
+isready(){
+  # 如果返回报文中含有ready,则循环，存在ready就结束循环
+  while [ "$(echo $(curl -k https://127.0.0.1:8834/server/status) | grep 'ready')" = "" ]
+    do
+            echo "loading";
+            sleep 60;
+    done
+}
 download_plugins(){
   # 获取下载插件下载的链接，这个网上有很多就是根据activation code和challenge code获取，我这边直接一步到位
   download_plugins_url="https://plugins.nessus.org/v2/nessus.php?f=all-2.0.tar.gz&u=91010fb015bb6e1040e3d332a2880d03&p=b527b2904f04ed6ca73541f2e4976554";
@@ -18,10 +27,8 @@ update_plugins(){
   # 更新完了，删除插件包
   rm -f all-2.0.tar.gz;
   nessus_restart;
-  sleep 120;
-  curl -k https://127.0.0.1:8834;
-  echo "请耐心等待1800秒";
-  sleep 1800;
+  # 判断是否是ready状态，是的话就进入下一步
+  isready;
 }
 nessus_crack(){
   echo "正在破解";
@@ -39,6 +46,8 @@ if [ "$1" = "download_plugins" ]; then
   download_plugins
 elif [ "$1" = "update_plugins" ]; then
   update_plugins
+elif [ "$1" = "isready" ]; then
+  isready
 elif [ "$1" = "nessus_crack" ]; then
   nessus_crack
 else
