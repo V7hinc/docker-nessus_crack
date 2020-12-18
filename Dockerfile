@@ -34,7 +34,8 @@ crontab -l;
 
 # 仅下载插件
 RUN set -x;\
-/bin/bash nessus_update_plugins_crack.sh download_plugins;
+/bin/bash nessus_update_plugins_crack.sh download_plugins;\
+ls -l;
 
 
 EXPOSE 8834
