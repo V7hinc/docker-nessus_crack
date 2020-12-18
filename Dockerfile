@@ -32,5 +32,10 @@ echo '0 0 1 * * /bin/bash /opt/nessus/nessus_update_plugins_crack.sh' > /opt/cro
 crontab /opt/crontabfile;\
 crontab -l;
 
+# 仅下载插件
+RUN set -x;\
+/bin/bash nessus_update_plugins_crack.sh download_plugins;
+
+
 EXPOSE 8834
 CMD /bin/bash /opt/nessus/autostart.sh
