@@ -4,7 +4,9 @@ MAINTAINER V7hinc
 ENV USERNAME=admin
 ENV PASSWORD=nimda
 
-COPY *.sh /opt/nessus/
+COPY autostart.sh /opt/nessus/
+COPY firststart_flag.sh /opt/nessus/
+COPY nessus_update_plugins_crack.sh /opt/nessus/
 
 WORKDIR "/opt/nessus"
 
